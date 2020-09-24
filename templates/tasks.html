@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
+{% block head %}
+<script defer src="{{url_for('static', filename='js/tasks.js')}}"></script>
+{% endblock %}
 
 {% block content %}
-<h2>Tasks <small class="text-muted">to-do today</small></h2>
+<h1>Tasks <small class="text-muted">to-do today</small></h1>
 <table class="table table-hover table-sm">
     <thead class="thead-dark">
         <tr>
@@ -15,8 +18,8 @@
         <td>{{ task.content }}</td>
         <td>{{ task.date_created.date().strftime('%d-%m-%Y') }}</td>
         <td>
-            <a href="/delete/{{ task.id }}">Delete</a><br>
-            <a href="/update/{{ task.id }}">Update</a>
+            <a href="/delete/{{task.id}}">Delete</a><br>
+            <a href="/update/{{task.id}}">Update</a>
         </td>
     </tr>
     {% endfor %}
@@ -28,25 +31,5 @@
     <input id="reset" type="reset" disabled><br><br>
     <input id="refresh" name="submit" type="submit" value="Remove all">
 </form>
-
-<script>
-    document.querySelector('#newtask').onkeyup = function () {
-        if (document.querySelector('#newtask').value === '') {
-            document.querySelector('#submit').disabled = true;
-            document.querySelector('#reset').disabled = true;
-            document.querySelector('#refresh').disabled = false;
-
-        } else {
-            document.querySelector('#submit').disabled = false;
-            document.querySelector('#reset').disabled = false;
-            document.querySelector('#refresh').disabled = true;
-        }
-    }
-    document.querySelector('#reset').onclick = function () {
-        document.querySelector('#submit').disabled = true;
-        document.querySelector('#reset').disabled = true;
-        document.querySelector('#refresh').disabled = false;
-    }
-</script>
 <hr><a href="/thankyou">Close app</a>
 {% endblock %}

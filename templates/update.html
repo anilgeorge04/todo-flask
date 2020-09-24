@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block head %}
 <script defer src="{{url_for('static', filename='js/update.js')}}"></script>
 {% endblock %}
@@ -14,20 +13,4 @@
     <input id="reset" type="reset" disabled>
 </form><br><br>
 Go back to <a href="/">all tasks</a>
-<script>
-    document.querySelector('#updtask').onkeyup = function () {
-        if (document.querySelector('#newtask').value === '') {
-            document.querySelector('#submit').disabled = true;
-            document.querySelector('#reset').disabled = true;
-
-        } else {
-            document.querySelector('#submit').disabled = false;
-            document.querySelector('#reset').disabled = false;
-        }
-    }
-    document.querySelector('#reset').onclick = function () {
-        document.querySelector('#submit').disabled = true;
-        document.querySelector('#reset').disabled = true;
-    }
-</script>
 {% endblock %}
