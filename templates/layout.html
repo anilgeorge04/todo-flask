@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Tasks Todo-ay</title>
+    {% block head %}
+    {% endblock %}
+    <!-- <style>
+        {% block style %}
+        {% endblock %}
+    </style> -->
+</head>
+
+<body>
+    <div id="page-container">
+        <div id="content-wrap">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <footer id="footer">
+            <p style="font-size: x-small;">This version works only in Development.</p>
+            🤍<a href="https://www.minimalcave.com">Minimal Cave</a> © 2020
+        </footer>
+    </div>
+</body>
+
+</html>

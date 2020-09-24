@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Tasks <small class="text-muted">to-do today</small></h2>
+<hr>
+<ul>
+    {% for todo in todos %}
+    <li>
+        {% if todo["status"]==0 %}
+        OPEN: 
+        {% else %}
+        DONE: 
+        {% endif %}
+        {{ todo["task"] }}
+    </li>
+    {% endfor %}
+</ul>
+<form action="/" method="POST">
+    <input id="newtask" name="newtask" type="text" placeholder="Enter task here" autofocus>
+    <input id="submit" name="submit" type="submit" value="Add Task" disabled>
+    <input id="reset" type="reset" disabled><br><br>
+    <input id="refresh" name ="submit" type="submit" value="Remove all">
+</form>
+<hr><a href="/thankyou">Close app</a>
+<script>
+    document.querySelector('#newtask').onkeyup = function () {
+        if (document.querySelector('#newtask').value === '') {
+            document.querySelector('#submit').disabled = true;
+            document.querySelector('#reset').disabled = true;
+            document.querySelector('#refresh').disabled = false;
+            
+        } else {
+            document.querySelector('#submit').disabled = false;
+            document.querySelector('#reset').disabled = false;
+            document.querySelector('#refresh').disabled = true;
+        }
+    }
+</script>
+{% endblock %}
