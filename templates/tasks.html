@@ -11,15 +11,22 @@
             <th>Task</th>
             <th>Added</th>
             <th>Actions</th>
+            <th>Status</th>
         </tr>
     </thead>
     {% for task in todos %}
     <tr>
         <td>{{ task.content }}</td>
-        <td>{{ task.date_created.date().strftime('%d-%m-%Y') }}</td>
+        <td>{{ task.date_created.date() }}</td>
         <td>
             <a href="/delete/{{task.id}}">Delete</a><br>
-            <a href="/update/{{task.id}}">Update</a>
+            <a href="/update/{{task.id}}">Update</a><br>
+            <a href="/complete/{{task.id}}">Mark complete</a>
+        </td>
+        <td>
+            {% if task.completed == 1 %} Done
+            {% else %} Open
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

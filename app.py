@@ -22,12 +22,17 @@ class Todo(db.Model):
 @app.route('/', methods=['GET', 'POST'])
 def tasks():
     if request.method == "GET":
-        todos = Todo.query.order_by(Todo.date_created).all()
+        todos = Todo.query.order_by(Todo.completed, Todo.date_created).all()
         return render_template('tasks.html', todos=todos)
     else:
         if request.form['submit'] == "Remove all":
-            pass
-            #             db.execute("DELETE FROM todo")
+            try:
+                db.session.query(Todo).delete()
+                db.session.commit()
+                return redirect('/')
+            except:
+                return "There was an issue deleting all tasks"
+
         elif request.form['submit'] == "Add Task":
             newtask = Todo(content=request.form.get("newtask"))
             try:
@@ -62,6 +67,16 @@ def update(id):
     else:
         return render_template('update.html', task=task_to_upd)
 
+
+@app.route('/complete/<int:id>')
+def complete(id):
+    task_to_comp = Todo.query.get_or_404(id)
+    task_to_comp.completed = 1
+    try:
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "There was an issue in marking that task as complete"
 
 @app.route('/thankyou')
 def thankyou():
