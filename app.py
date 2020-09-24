@@ -1,41 +1,69 @@
 # TODO list flask app
 from flask import Flask, redirect, render_template, request
-# import sqlite3
-from cs50 import SQL
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
+db = SQLAlchemy(app)
 
-# create new to write on fresh each time
-# open("todo.db", "w").close()
 
-# start connection and setup cursor
-# conn = sqlite3.connect("todo.db")
-# set row factory property of connection object to sqlite3.Row to return list of dictionaries instead of tuples
-# conn.row_factory = sqlite3.Row
-# set cursor object
-# db = conn.cursor()
-db = SQL("sqlite:///todo.db")
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(200), nullable=False)
+    completed = db.Column(db.Integer, default=0)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-@app.route('/', methods=["GET", "POST"])
+    def __repr__(self):
+        return '<Task %r>' % self.id
+
+
+@app.route('/', methods=['GET', 'POST'])
 def tasks():
     if request.method == "GET":
-        todos = db.execute("SELECT * FROM todo")
-        # convert sqlite3.Row objects to dictionary
-        # todos = [dict(row) for row in db.fetchall()]
+        todos = Todo.query.order_by(Todo.date_created).all()
         return render_template('tasks.html', todos=todos)
     else:
         if request.form['submit'] == "Remove all":
-            db.execute("DELETE FROM todo")
+            pass
+            #             db.execute("DELETE FROM todo")
         elif request.form['submit'] == "Add Task":
-            newtask = request.form.get("newtask")
-            db.execute("INSERT INTO todo (task) VALUES (:task)", task=newtask)
+            newtask = Todo(content=request.form.get("newtask"))
+            try:
+                db.session.add(newtask)
+                db.session.commit()
+                return redirect('/')
+            except:
+                return "There was an issue adding that task"
+
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    task_to_del = Todo.query.get_or_404(id)
+    try:
+        db.session.delete(task_to_del)
+        db.session.commit()
         return redirect('/')
+    except:
+        return "There was an issue in deleting that task"
+
+
+@app.route('/update/<int:id>')
+def update(id):
+    task_to_upd = Todo.query.get_or_404(id)
+    try:
+        db.session.update(task_to_upd)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "There was an issue in updating that task"
 
 
 @app.route('/thankyou')
 def thankyou():
-    # Save and close
-    # db.close()
-    # conn.commit()
-    # conn.close()
     return render_template('thankyou.html')
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
