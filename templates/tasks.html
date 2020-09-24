@@ -5,6 +5,10 @@
 
 {% block content %}
 <h1>Tasks <small class="text-muted">to-do today</small></h1>
+{% if todos|length < 1 %}
+<h4>🌇 All clear!</h4>
+<p>Add new tasks below.</p><br>
+{% else %}
 <table class="table table-hover table-sm">
     <thead class="thead-dark">
         <tr>
@@ -24,14 +28,14 @@
             <a href="/complete/{{task.id}}">Mark complete</a>
         </td>
         <td>
-            {% if task.completed == 1 %} Done
-            {% else %} Open
+            {% if task.completed == 1 %} ☑️Done
+            {% else %} 📥Open
             {% endif %}
         </td>
     </tr>
     {% endfor %}
 </table>
-
+{% endif %}
 <form action="/" method="POST">
     <input id="newtask" name="newtask" type="text" placeholder="Enter task here" autofocus>
     <input id="submit" name="submit" type="submit" value="Add Task" disabled>
