@@ -10,10 +10,11 @@
     position: relative;
     min-height: 100vh;
     background-color: antiquewhite;
+    text-align: center;
 }
 
 #content-wrap {
-    margin-top: auto;
-    margin-bottom: auto;
+    /* margin-top: auto;
+    margin-bottom: auto; */
     padding-bottom: 4vh;
 }
