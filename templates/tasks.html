@@ -25,7 +25,10 @@
         <td>
             <a href="/delete/{{task.id}}">Delete</a><br>
             <a href="/update/{{task.id}}">Update</a><br>
+            {% if task.completed == 1 %} 
+            {% else %} 
             <a href="/complete/{{task.id}}">Mark complete</a>
+            {% endif %}
         </td>
         <td>
             {% if task.completed == 1 %} ☑️Done
